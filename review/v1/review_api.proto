@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package review.v1;
+
+import "review.proto";
+import "metrics.proto";
+
+
+service ReviewAPI {
+    // Batch review lookup - specific station
+    rpc BatchGetReview(BatchGetReviewRequest) returns (BatchGetReviewResponse) {}
+
+    // Batch review lookup - user specific
+    rpc BatchGetUserReview(BatchGetUserReviewRequest) returns (BatchGetReviewResponse) {}
+
+    // Create a Review
+    rpc CreateReview(CreateReviewRequest) returns (CreateReviewResponse) {}
+
+    // Get overall review metrics for a station
+    rpc GetReviewMetrics(GetMetricsRequest) returns (GetMetricsResponse) {}
+    
+    // Report / Delete / Edit????
+}
+ 
+// Request details to lookup review(s) for a specific station
+message BatchGetReviewRequest {
+    // The charger station id
+    string station_id = 1;
+    // todo: pagination, and max size limit
+}
+
+// Response details from batch review lookup
+message BatchGetReviewResponse {
+    // List of reviews
+    repeated Review reviews = 1;
+    // Page token for next n reviews
+    string next_page_token = 2;
+}
+
+// Request details to get user specific reviews
+message BatchGetUserReviewRequest {
+    // User's firebase uid
+    string uid = 1;
+}
+
+// Create review request details
+message CreateReviewRequest {
+    Review review = 1;
+}
+
+// Create review response details 
+message CreateReviewResponse {
+    Review review = 1;
+}
+
+// Request details to get metrics for a station
+message GetMetricsRequest {
+    string station_id = 1;
+}
+
+// Response details for a stations review metrics
+message GetMetricsResponse {
+    ReviewMetrics metrics = 1;
+}

@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package user.v1;
+
+import "user.proto";
+
+service UserAPI {
+    // Create a User - compares uid against existing users + Authorization header
+    rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {}
+
+    // Delete a User - based on Authorization header
+    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {}
+
+    // Retrieve a User - based on Authorization header
+    rpc GetUser(GetUserRequest) returns (GetUserResponse) {}
+}
+
+// Input to create a user
+message CreateUserRequest {
+    // User's firebase uid
+    string uid = 1;
+}
+
+// Response from creating a user
+message CreateUserResponse {
+    User user = 1;
+}
+
+// Request details of a user fetch - uses Authorization header
+message GetUserRequest {}
+
+// Response details of a user fetch
+message GetUserResponse {
+    User user = 1;
+}
+
+// Request details of an account delete
+message DeleteUserRequest {
+    DeleteReason reason = 1;
+}
+
+// Response details of an account delete request
+message DeleteUserResponse {}

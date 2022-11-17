@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package review.v1;
-
-message ReviewMetrics {
-    string station_id = 1;
-    int32 total_reviews = 2;
-    float average_rating = 3;
-}

@@ -1,19 +1,9 @@
-mod utils;
-
-use wasm_bindgen::prelude::*;
-
-// When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
-// allocator.
-#[cfg(feature = "wee_alloc")]
-#[global_allocator]
-static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
-
-#[wasm_bindgen]
-extern {
-    fn alert(s: &str);
+pub mod bookstore {
+    include!("../generated/bookstore.rs");
+    // pub const GRPC_HEALTH_V1_FILE_DESCRIPTOR_SET: &[u8] =
+    //     include_bytes!("../generated/grpc_health_v1.bin");
 }
 
-#[wasm_bindgen]
-pub fn greet() {
-    alert("Hello, ev-protobufs!");
+pub mod greeter {
+    include!("../generated/greeter.rs");
 }

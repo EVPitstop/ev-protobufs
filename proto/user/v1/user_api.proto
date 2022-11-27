@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package user.v1;
+
+import "proto/user/v1/user.proto";
+
+service UserAPI {
+    // Create a User - compares uid against existing users + Authorization header
+    rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {}
+
+    // Delete a User - based on Authorization header
+    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {}
+
+    // Retrieve a User - based on Authorization header
+    rpc GetUser(GetUserRequest) returns (GetUserResponse) {}
+
+    // Add a push token to users existing push token(s)
+    rpc UpdatePushTokens(UpdatePushTokensRequest) returns (UpdatePushTokensResponse) {}
+
+    // Update user's account type - probably called by revenu cat lambda
+    rpc UpdateAccountType(UpdateAccountTypeRequest) returns (UpdateAccountTypeResponse) {}
+}
+
+
+// Input to create a user
+message CreateUserRequest {
+    // User's firebase uid
+    string uid = 1;
+}
+
+// Response from creating a user
+message CreateUserResponse {
+    User user = 1;
+}
+
+// Request details of a user fetch - uses Authorization header
+message GetUserRequest {}
+
+// Response details of a user fetch
+message GetUserResponse {
+    User user = 1;
+}
+
+// Request details of an account delete
+message DeleteUserRequest {
+    DeleteReason reason = 1;
+}
+
+// Response details of an account delete request
+message DeleteUserResponse {}
+
+// Request to store new push token
+message UpdatePushTokensRequest {
+    string push_token = 1;
+}
+
+// Response from storing push token
+message UpdatePushTokensResponse {}
+
+// Request to update users account type
+message UpdateAccountTypeRequest {
+    AccountType account_type = 1;
+}
+
+// Response from updating users account type
+message UpdateAccountTypeResponse {}

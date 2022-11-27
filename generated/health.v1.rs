@@ -1,39 +1,23 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetHealthRequest {}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetHealthResponse {
+pub struct HealthRequest {
     #[prost(string, tag = "1")]
     pub health: ::prost::alloc::string::String,
 }
-/// The request with a id of the book
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetBookRequest {
+pub struct HealthResponse {
     #[prost(string, tag = "1")]
-    pub id: ::prost::alloc::string::String,
-}
-/// The response details of a book
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetBookResponse {
-    #[prost(string, tag = "1")]
-    pub id: ::prost::alloc::string::String,
-    #[prost(string, tag = "2")]
-    pub name: ::prost::alloc::string::String,
-    #[prost(string, tag = "3")]
-    pub author: ::prost::alloc::string::String,
-    #[prost(int32, tag = "4")]
-    pub year: i32,
+    pub health: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
-pub mod bookstore_client {
+pub mod health_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// The book store service definition.
     #[derive(Debug, Clone)]
-    pub struct BookstoreClient<T> {
+    pub struct HealthClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl BookstoreClient<tonic::transport::Channel> {
+    impl HealthClient<tonic::transport::Channel> {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
@@ -44,7 +28,7 @@ pub mod bookstore_client {
             Ok(Self::new(conn))
         }
     }
-    impl<T> BookstoreClient<T>
+    impl<T> HealthClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
@@ -62,7 +46,7 @@ pub mod bookstore_client {
         pub fn with_interceptor<F>(
             inner: T,
             interceptor: F,
-        ) -> BookstoreClient<InterceptedService<T, F>>
+        ) -> HealthClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
@@ -76,7 +60,7 @@ pub mod bookstore_client {
                 http::Request<tonic::body::BoxBody>,
             >>::Error: Into<StdError> + Send + Sync,
         {
-            BookstoreClient::new(InterceptedService::new(inner, interceptor))
+            HealthClient::new(InterceptedService::new(inner, interceptor))
         }
         /// Compress requests with the given encoding.
         ///
@@ -93,11 +77,10 @@ pub mod bookstore_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
-        /// Retrieve a book
-        pub async fn get_book(
+        pub async fn health_c_heck(
             &mut self,
-            request: impl tonic::IntoRequest<super::GetBookRequest>,
-        ) -> Result<tonic::Response<super::GetBookResponse>, tonic::Status> {
+            request: impl tonic::IntoRequest<super::HealthRequest>,
+        ) -> Result<tonic::Response<super::HealthResponse>, tonic::Status> {
             self.inner
                 .ready()
                 .await
@@ -109,57 +92,32 @@ pub mod bookstore_client {
                 })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/bookstore.Bookstore/GetBook",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        pub async fn health(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetHealthRequest>,
-        ) -> Result<tonic::Response<super::GetHealthResponse>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/bookstore.Bookstore/Health",
+                "/health.v1.Health/HealthCHeck",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
 }
 /// Generated server implementations.
-pub mod bookstore_server {
+pub mod health_server {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    ///Generated trait containing gRPC methods that should be implemented for use with BookstoreServer.
+    ///Generated trait containing gRPC methods that should be implemented for use with HealthServer.
     #[async_trait]
-    pub trait Bookstore: Send + Sync + 'static {
-        /// Retrieve a book
-        async fn get_book(
+    pub trait Health: Send + Sync + 'static {
+        async fn health_c_heck(
             &self,
-            request: tonic::Request<super::GetBookRequest>,
-        ) -> Result<tonic::Response<super::GetBookResponse>, tonic::Status>;
-        async fn health(
-            &self,
-            request: tonic::Request<super::GetHealthRequest>,
-        ) -> Result<tonic::Response<super::GetHealthResponse>, tonic::Status>;
+            request: tonic::Request<super::HealthRequest>,
+        ) -> Result<tonic::Response<super::HealthResponse>, tonic::Status>;
     }
-    /// The book store service definition.
     #[derive(Debug)]
-    pub struct BookstoreServer<T: Bookstore> {
+    pub struct HealthServer<T: Health> {
         inner: _Inner<T>,
         accept_compression_encodings: EnabledCompressionEncodings,
         send_compression_encodings: EnabledCompressionEncodings,
     }
     struct _Inner<T>(Arc<T>);
-    impl<T: Bookstore> BookstoreServer<T> {
+    impl<T: Health> HealthServer<T> {
         pub fn new(inner: T) -> Self {
             Self::from_arc(Arc::new(inner))
         }
@@ -193,9 +151,9 @@ pub mod bookstore_server {
             self
         }
     }
-    impl<T, B> tonic::codegen::Service<http::Request<B>> for BookstoreServer<T>
+    impl<T, B> tonic::codegen::Service<http::Request<B>> for HealthServer<T>
     where
-        T: Bookstore,
+        T: Health,
         B: Body + Send + 'static,
         B::Error: Into<StdError> + Send + 'static,
     {
@@ -211,22 +169,24 @@ pub mod bookstore_server {
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
             match req.uri().path() {
-                "/bookstore.Bookstore/GetBook" => {
+                "/health.v1.Health/HealthCHeck" => {
                     #[allow(non_camel_case_types)]
-                    struct GetBookSvc<T: Bookstore>(pub Arc<T>);
-                    impl<T: Bookstore> tonic::server::UnaryService<super::GetBookRequest>
-                    for GetBookSvc<T> {
-                        type Response = super::GetBookResponse;
+                    struct HealthCHeckSvc<T: Health>(pub Arc<T>);
+                    impl<T: Health> tonic::server::UnaryService<super::HealthRequest>
+                    for HealthCHeckSvc<T> {
+                        type Response = super::HealthResponse;
                         type Future = BoxFuture<
                             tonic::Response<Self::Response>,
                             tonic::Status,
                         >;
                         fn call(
                             &mut self,
-                            request: tonic::Request<super::GetBookRequest>,
+                            request: tonic::Request<super::HealthRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { (*inner).get_book(request).await };
+                            let fut = async move {
+                                (*inner).health_c_heck(request).await
+                            };
                             Box::pin(fut)
                         }
                     }
@@ -235,45 +195,7 @@ pub mod bookstore_server {
                     let inner = self.inner.clone();
                     let fut = async move {
                         let inner = inner.0;
-                        let method = GetBookSvc(inner);
-                        let codec = tonic::codec::ProstCodec::default();
-                        let mut grpc = tonic::server::Grpc::new(codec)
-                            .apply_compression_config(
-                                accept_compression_encodings,
-                                send_compression_encodings,
-                            );
-                        let res = grpc.unary(method, req).await;
-                        Ok(res)
-                    };
-                    Box::pin(fut)
-                }
-                "/bookstore.Bookstore/Health" => {
-                    #[allow(non_camel_case_types)]
-                    struct HealthSvc<T: Bookstore>(pub Arc<T>);
-                    impl<
-                        T: Bookstore,
-                    > tonic::server::UnaryService<super::GetHealthRequest>
-                    for HealthSvc<T> {
-                        type Response = super::GetHealthResponse;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
-                        fn call(
-                            &mut self,
-                            request: tonic::Request<super::GetHealthRequest>,
-                        ) -> Self::Future {
-                            let inner = self.0.clone();
-                            let fut = async move { (*inner).health(request).await };
-                            Box::pin(fut)
-                        }
-                    }
-                    let accept_compression_encodings = self.accept_compression_encodings;
-                    let send_compression_encodings = self.send_compression_encodings;
-                    let inner = self.inner.clone();
-                    let fut = async move {
-                        let inner = inner.0;
-                        let method = HealthSvc(inner);
+                        let method = HealthCHeckSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(
@@ -300,7 +222,7 @@ pub mod bookstore_server {
             }
         }
     }
-    impl<T: Bookstore> Clone for BookstoreServer<T> {
+    impl<T: Health> Clone for HealthServer<T> {
         fn clone(&self) -> Self {
             let inner = self.inner.clone();
             Self {
@@ -310,7 +232,7 @@ pub mod bookstore_server {
             }
         }
     }
-    impl<T: Bookstore> Clone for _Inner<T> {
+    impl<T: Health> Clone for _Inner<T> {
         fn clone(&self) -> Self {
             Self(self.0.clone())
         }
@@ -320,7 +242,7 @@ pub mod bookstore_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: Bookstore> tonic::server::NamedService for BookstoreServer<T> {
-        const NAME: &'static str = "bookstore.Bookstore";
+    impl<T: Health> tonic::server::NamedService for HealthServer<T> {
+        const NAME: &'static str = "health.v1.Health";
     }
 }

@@ -1,6 +1,6 @@
 [package]
 name = "ev-protobufs"
-version = "1.0.4"
+version = "1.0.5"
 edition = "2021"
 authors = ["Ethan Cheatham <ethanwcheatham@gmail.com>"]
 description = "Generated tonic rust files based on proto definitions"
@@ -11,6 +11,7 @@ readme = "README.md"
 [dependencies]
 prost = "0.11"
 tonic = "0.8"
+serde = { version = "1.0.137", features = ["derive"] }
 
 [build-dependencies]
 tonic-build = "0.8"

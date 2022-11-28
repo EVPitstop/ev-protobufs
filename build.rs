@@ -17,6 +17,7 @@ fn main() {
     tonic_build::configure()
         .build_server(true)
         .build_client(true)
+        .type_attribute(".", "#[derive(Serialize, Deserialize)]")
         .file_descriptor_set_path(out_dir.join("greeter_descriptor.bin"))
         .out_dir("./generated")
         .compile(&protos, &["."])

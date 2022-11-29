@@ -1,10 +1,10 @@
-#[derive(Serialize, Deserialize)]
+#[derive(serde::Serialize, serde::Deserialize)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthRequest {
     #[prost(string, tag = "1")]
     pub health: ::prost::alloc::string::String,
 }
-#[derive(Serialize, Deserialize)]
+#[derive(serde::Serialize, serde::Deserialize)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthResponse {
     #[prost(string, tag = "1")]

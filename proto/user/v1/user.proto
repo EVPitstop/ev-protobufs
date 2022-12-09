@@ -24,8 +24,8 @@ enum AccountType {
 }
 
 
-// // TODO: Where to store this data?
-// // Possible reasons for account deletion
-// enum DeleteReason {
-//     DELETE_REASON_UNSPECIFIED = 0;
-// }
+// TODO: Where to store this data?
+// Possible reasons for account deletion
+enum DeleteReason {
+    DELETE_REASON_UNSPECIFIED = 0;
+}

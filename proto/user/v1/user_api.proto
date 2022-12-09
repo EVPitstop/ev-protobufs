@@ -23,10 +23,7 @@ service UserAPI {
 
 
 // Input to create a user
-message CreateUserRequest {
-    // User's firebase uid
-    string uid = 1;
-}
+message CreateUserRequest {}
 
 // Response from creating a user
 message CreateUserResponse {

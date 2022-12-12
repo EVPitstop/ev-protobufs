@@ -11,6 +11,8 @@ message User {
     AccountType account_type = 3;
     // User's push token(s)
     repeated string push_tokens = 4;
+    // User's name
+    string name = 5;
 }
 
 // Possible account type a user can have

@@ -23,7 +23,11 @@ service UserAPI {
 
 
 // Input to create a user
-message CreateUserRequest {}
+message CreateUserRequest {
+    string uid = 1;
+    string email = 2;
+    string name = 3;
+}
 
 // Response from creating a user
 message CreateUserResponse {

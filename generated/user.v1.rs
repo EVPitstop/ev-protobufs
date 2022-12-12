@@ -13,6 +13,9 @@ pub struct User {
     /// User's push token(s)
     #[prost(string, repeated, tag = "4")]
     pub push_tokens: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// User's name
+    #[prost(string, tag = "5")]
+    pub name: ::prost::alloc::string::String,
 }
 /// Possible account type a user can have
 #[derive(serde::Serialize, serde::Deserialize)]
@@ -62,7 +65,14 @@ impl DeleteReason {
 /// Input to create a user
 #[derive(serde::Serialize, serde::Deserialize)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateUserRequest {}
+pub struct CreateUserRequest {
+    #[prost(string, tag = "1")]
+    pub uid: ::prost::alloc::string::String,
+    #[prost(string, tag = "2")]
+    pub email: ::prost::alloc::string::String,
+    #[prost(string, tag = "3")]
+    pub name: ::prost::alloc::string::String,
+}
 /// Response from creating a user
 #[derive(serde::Serialize, serde::Deserialize)]
 #[derive(Clone, PartialEq, ::prost::Message)]

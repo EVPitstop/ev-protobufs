@@ -124,6 +124,15 @@ pub struct UpdateAccountTypeRequest {
 #[derive(serde::Serialize, serde::Deserialize)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAccountTypeResponse {}
+#[derive(serde::Serialize, serde::Deserialize)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetHealthRequest {}
+#[derive(serde::Serialize, serde::Deserialize)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetHealthResponse {
+    #[prost(string, tag = "1")]
+    pub health: ::prost::alloc::string::String,
+}
 /// Generated client implementations.
 pub mod user_api_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -291,6 +300,24 @@ pub mod user_api_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        /// Manually implemented health check endpoint for user service
+        pub async fn health(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetHealthRequest>,
+        ) -> Result<tonic::Response<super::GetHealthResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static("/user.v1.UserAPI/Health");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
     }
 }
 /// Generated server implementations.
@@ -325,6 +352,11 @@ pub mod user_api_server {
             &self,
             request: tonic::Request<super::UpdateAccountTypeRequest>,
         ) -> Result<tonic::Response<super::UpdateAccountTypeResponse>, tonic::Status>;
+        /// Manually implemented health check endpoint for user service
+        async fn health(
+            &self,
+            request: tonic::Request<super::GetHealthRequest>,
+        ) -> Result<tonic::Response<super::GetHealthResponse>, tonic::Status>;
     }
     #[derive(Debug)]
     pub struct UserApiServer<T: UserApi> {
@@ -566,6 +598,42 @@ pub mod user_api_server {
                     let fut = async move {
                         let inner = inner.0;
                         let method = UpdateAccountTypeSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/user.v1.UserAPI/Health" => {
+                    #[allow(non_camel_case_types)]
+                    struct HealthSvc<T: UserApi>(pub Arc<T>);
+                    impl<T: UserApi> tonic::server::UnaryService<super::GetHealthRequest>
+                    for HealthSvc<T> {
+                        type Response = super::GetHealthResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::GetHealthRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { (*inner).health(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = HealthSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(

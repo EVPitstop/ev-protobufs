@@ -19,6 +19,9 @@ service UserAPI {
 
     // Update user's account type - probably called by revenu cat lambda
     rpc UpdateAccountType(UpdateAccountTypeRequest) returns (UpdateAccountTypeResponse) {}
+
+    // Manually implemented health check endpoint for user service
+    rpc Health(GetHealthRequest) returns (GetHealthResponse) {}
 }
 
 
@@ -65,3 +68,8 @@ message UpdateAccountTypeRequest {
 
 // Response from updating users account type
 message UpdateAccountTypeResponse {}
+
+message GetHealthRequest {}
+message GetHealthResponse {
+  string health = 1;
+}

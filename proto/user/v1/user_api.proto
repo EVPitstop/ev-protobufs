@@ -64,7 +64,8 @@ message SavePushTokenResponse {}
 
 // Request to update users account type
 message UpdateAccountTypeRequest {
-    AccountType account_type = 1;
+    string uid = 1;
+    AccountType account_type = 2;
 }
 
 // Response from updating users account type

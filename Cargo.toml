@@ -1,6 +1,6 @@
 [package]
 name = "ev-protobufs"
-version = "1.0.10"
+version = "1.0.11"
 edition = "2021"
 authors = ["Ethan Cheatham <ethanwcheatham@gmail.com>"]
 description = "Generated tonic rust files based on proto definitions"

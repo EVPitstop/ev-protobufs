@@ -8,20 +8,17 @@ service UserAPI {
     // Create a User - compares uid against existing users + Authorization header
     rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {}
 
-    // Delete a User - based on Authorization header
-    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {}
-
     // Retrieve a User - based on Authorization header
     rpc GetUser(GetUserRequest) returns (GetUserResponse) {}
 
+    // Delete a User - based on Authorization header
+    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {}
+
     // Add a push token to users existing push token(s)
-    rpc UpdatePushTokens(UpdatePushTokensRequest) returns (UpdatePushTokensResponse) {}
+    rpc SavePushToken(SavePushTokenRequest) returns (SavePushTokenResponse) {}
 
-    // Update user's account type - probably called by revenu cat lambda
+    // Update user's account type - called by revenue cat lambda
     rpc UpdateAccountType(UpdateAccountTypeRequest) returns (UpdateAccountTypeResponse) {}
-
-    // Manually implemented health check endpoint for user service
-    rpc Health(GetHealthRequest) returns (GetHealthResponse) {}
 }
 
 
@@ -37,8 +34,10 @@ message CreateUserResponse {
     User user = 1;
 }
 
-// Request details of a user fetch - uses Authorization header
-message GetUserRequest {}
+// Request details of a user fetch
+message GetUserRequest {
+    string uid = 1;
+}
 
 // Response details of a user fetch
 message GetUserResponse {
@@ -47,19 +46,21 @@ message GetUserResponse {
 
 // Request details of an account delete
 message DeleteUserRequest {
-    DeleteReason reason = 1;
+    string uid = 1;
+    DeleteReason reason = 2;
 }
 
 // Response details of an account delete request
 message DeleteUserResponse {}
 
 // Request to store new push token
-message UpdatePushTokensRequest {
-    string push_token = 1;
+message SavePushTokenRequest {
+    string uid = 1;
+    string push_token = 2;
 }
 
 // Response from storing push token
-message UpdatePushTokensResponse {}
+message SavePushTokenResponse {}
 
 // Request to update users account type
 message UpdateAccountTypeRequest {
@@ -68,8 +69,3 @@ message UpdateAccountTypeRequest {
 
 // Response from updating users account type
 message UpdateAccountTypeResponse {}
-
-message GetHealthRequest {}
-message GetHealthResponse {
-  string health = 1;
-}
